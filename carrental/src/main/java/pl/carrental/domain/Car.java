@@ -2,6 +2,7 @@ package pl.carrental.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,9 @@ public class Car {
     private Department department;
     @Transient
     private Long departmentId;
+
+    @OneToMany(mappedBy = "car")
+    private List<CarRent> rents;
     public Long getId() {
         return id;
     }
@@ -69,6 +73,14 @@ public class Car {
 
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public List<CarRent> getRents() {
+        return rents;
+    }
+
+    public void setRents(List<CarRent> rents) {
+        this.rents = rents;
     }
 
     @Override

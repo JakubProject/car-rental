@@ -18,14 +18,14 @@
             <div class="card">
                 <img src="/img/car.png" class="card-img-top" alt="car logo">
                 <div class="card-body">
-                    <h5 class="card-title"><span th:text="${car.mark}"></span><span th:text="${car.model}"></span></h5>
+                    <h5 class="card-title"><span th:text="${car.mark}"> </span><span th:text="${car.model}"></span></h5>
                 </div>
                 <ul class="list-group list-group-flush">
                 <li class="list-group-item">Cena za dzień: <span th:text="${car.perDay}"></span></li>
                 <li class="list-group-item">Odbiór: <span th:text="${car.department}"></span></li>
                 </ul>
                 <div class="card-body">
-                    <a href="#" class="card-link">Wynajmij</a>
+                    <a class="btn btn-primary" href="#" th:href="@{/client/rent/{id}(id = ${car.id})}"> Wynajmij </a>
                 </div>
             </div>
         </div>
