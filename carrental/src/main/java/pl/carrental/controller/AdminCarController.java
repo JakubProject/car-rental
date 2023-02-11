@@ -2,13 +2,17 @@ package pl.carrental.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.carrental.controller.validator.CarValidator;
 import pl.carrental.domain.Car;
-import pl.carrental.domain.Department;
 import pl.carrental.exception.CarException;
 import pl.carrental.exception.DepartmentException;
 import pl.carrental.service.CarService;
 import pl.carrental.service.DepartmentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/cars")
@@ -16,9 +20,11 @@ public class AdminCarController {
 
     private final CarService carService;
     private final DepartmentService departmentService;
-    public AdminCarController(CarService carService, DepartmentService departmentService) {
+    private final CarValidator carValidator;
+    public AdminCarController(CarService carService, DepartmentService departmentService, CarValidator carValidator) {
         this.carService = carService;
         this.departmentService = departmentService;
+        this.carValidator = carValidator;
     }
 
 
@@ -51,10 +57,19 @@ public class AdminCarController {
     }
 
     @PostMapping("/save")
-    public String saveMovie(@ModelAttribute Car car, Model model) throws DepartmentException {
+    public String saveMovie(@ModelAttribute Car car, Model model, BindingResult bindingResult) throws DepartmentException {
         try{
-            carService.save(car);
-            model.addAttribute("cars", carService.getAll());
+            carValidator.validate(car, bindingResult);
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("departments", departmentService.getAll());
+                if(Objects.nonNull(car.getId())){
+                    return "adminEditCarPage";
+                }
+                return "adminAddCarPage";
+            }
+                carService.save(car);
+                model.addAttribute("cars", carService.getAll());
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
         }

@@ -7,4 +7,5 @@ public class ErrorConstant {
     public static final String DEPARTMENT_NOT_FOUND = "Oddział nie został znaleziony!";
     public static final String CAR_NOT_FOUND = "Samochód nie znaleziony";
     public static final String BAD_RANGE = "Nieprawidłowy zakres dat";
+    public static final String CAR_RENT_NOT_FOUND = "Nie znaleziono wypożyczenia o podanym ID";
 }

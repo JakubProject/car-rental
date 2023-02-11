@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarRentService {
@@ -21,19 +22,33 @@ public class CarRentService {
         this.carRentRepository = carRentRepository;
     }
 
-    public List<CarRent> findByUserId(Long userId){
+    public List<CarRent> findByUserId(Long userId) {
         return carRentRepository.findByUserId(userId);
+    }
+
+    public List<CarRent> findAll() {
+        return carRentRepository.findAll();
     }
 
     public void save(CarRent carRent) throws CarRentException {
         LocalDate today = LocalDate.now();
         boolean isInvalidDate = today.isBefore(carRent.getStartDate()) || carRent.getStartDate().isAfter(carRent.getEndDate());
-        if(isInvalidDate){
+        if (isInvalidDate) {
             throw new CarRentException(ErrorConstant.BAD_RANGE);
         }
         long until = carRent.getStartDate().until(carRent.getEndDate(), ChronoUnit.DAYS);
         carRent.setTotalCost(carRent.getCar().getPerDay().multiply(BigDecimal.valueOf(until)));
         carRent.setStatus("NOWE ZGŁOSZENIE");
+        carRentRepository.save(carRent);
+    }
+
+    public void editStatus(Long id, String status) throws CarRentException {
+        Optional<CarRent> rent = carRentRepository.findById(id);
+        if(rent.isEmpty()){
+            throw new CarRentException(ErrorConstant.CAR_RENT_NOT_FOUND);
+        }
+        CarRent carRent = rent.get();
+        carRent.setStatus(status);
         carRentRepository.save(carRent);
     }
 

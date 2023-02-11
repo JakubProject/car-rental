@@ -5,11 +5,14 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.carrental.domain.Role;
+import pl.carrental.domain.Status;
 import pl.carrental.domain.User;
 import pl.carrental.repository.RoleRepository;
+import pl.carrental.repository.StatusRepository;
 import pl.carrental.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -18,14 +21,29 @@ public class InitService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public InitService(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final StatusRepository statusRepository;
+    public InitService(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, StatusRepository statusRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.statusRepository = statusRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void addMainAdmin() {
+    public void initData() {
+        statusRepository.deleteAll();
+        Status status1 = new Status();
+        status1.setId(1L);
+        status1.setName("NOWE ZGŁOSZENIE");
+        Status status2 = new Status();
+        status2.setId(2L);
+        status2.setName("POTWIERDZONE");
+        Status status3 = new Status();
+        status3.setId(3L);
+        status3.setName("ANULOWANE ");
+
+        statusRepository.saveAll(List.of(status1, status2, status3));
+
         Optional<User> admin = userRepository.findByUsername("admin");
         if(admin.isEmpty()){
             User user = new User();

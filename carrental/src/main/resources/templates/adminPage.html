@@ -13,6 +13,34 @@
 <body>
 <div class="container m-5">
     <nav th:replace="fragments/adminNavbar :: adminNavbar"></nav>
+    <h3 class="text-center text-success">Lista zgłoszeń</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th> Samochód </th>
+            <th> Całkowity koszt </th>
+            <th> Termin </th>
+            <th> Oddział</th>
+            <th> Status </th>
+            <th> Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${carRents.empty}">
+            <td colspan="2"> Brak historii </td>
+        </tr>
+        <tr th:each="carRent : ${carRents}">
+            <td><span th:text="${carRent.car.mark}"> Mark </span> <span th:text="${carRent.car.model}"> Model</span></td>
+            <td><span th:text="${carRent.totalCost}"> Total cost </span></td>
+            <td><span th:text="${carRent.startDate}"> Start </span> - <span th:text="${carRent.endDate}"> End</span></td>
+            <td><span th:text="${carRent.car.department.city}"> Miasto </span>
+                <span th:text="${carRent.car.department.street}"> Ulica </span>
+                <span th:text="${carRent.car.department.no}"> Numer </span></td>
+            <td><span th:text="${carRent.status}"> Status </span> </td>
+            <td><a class="btn btn-primary" href="#" th:href="@{/admin/rent/edit/{id}(id = ${carRent.id})}"> Zmień status </a></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
