@@ -91,7 +91,7 @@ public class UserController {
         if (role.contains("ADMIN")) {
             return "redirect:/admin/home";
         } else if (role.contains("USER")) {
-            return "redirect:/user/home";
+            return "redirect:/client/home";
         } else {
             return "redirect:/login";
         }

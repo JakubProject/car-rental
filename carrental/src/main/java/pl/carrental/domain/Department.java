@@ -79,11 +79,6 @@ public class Department {
 
     @Override
     public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", no='" + no + '\'' +
-                '}';
+        return "Odział {" + city + " " + street + " " + no + "}";
     }
 }
