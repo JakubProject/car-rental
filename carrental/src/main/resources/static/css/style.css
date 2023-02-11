@@ -1,0 +1,15 @@
+body {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+.nav-link {
+    text-align: center;
+}
+
+.container {
+    margin: 0 auto;
+}
