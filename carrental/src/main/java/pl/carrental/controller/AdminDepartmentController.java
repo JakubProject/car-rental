@@ -2,19 +2,23 @@ package pl.carrental.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.carrental.controller.validator.DepartmentValidator;
 import pl.carrental.domain.Department;
-import pl.carrental.service.CarService;
 import pl.carrental.service.DepartmentService;
+
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/departments")
 public class AdminDepartmentController {
 
     private final DepartmentService departmentService;
-
-    public AdminDepartmentController(DepartmentService departmentService) {
+    private final DepartmentValidator departmentValidator;
+    public AdminDepartmentController(DepartmentService departmentService, DepartmentValidator departmentValidator) {
         this.departmentService = departmentService;
+        this.departmentValidator = departmentValidator;
     }
 
 
@@ -34,25 +38,36 @@ public class AdminDepartmentController {
     }
 
     @GetMapping("/edit/{id}")
-    public String add(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         try {
             Department department = departmentService.getById(id);
             model.addAttribute("department", department);
 
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
 
         return "adminEditDepartmentPage";
     }
 
     @PostMapping("/save")
-    public String saveMovie(@ModelAttribute Department department, Model model) {
+    public String save(@ModelAttribute Department department, Model model, BindingResult bindingResult) {
         try{
+            departmentValidator.validate(department, bindingResult);
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("departments", departmentService.getAll());
+                if(Objects.nonNull(department.getId())){
+                    return "adminEditDepartmentPage";
+                }
+                return "adminAddDepartmentPage";
+            }
             departmentService.save(department);
             model.addAttribute("movies", departmentService.getAll());
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "redirect:/admin/departments/";
     }
@@ -63,6 +78,7 @@ public class AdminDepartmentController {
             departmentService.remove(id);
         } catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "redirect:/admin/departments/";
     }

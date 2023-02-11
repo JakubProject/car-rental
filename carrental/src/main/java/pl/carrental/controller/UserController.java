@@ -96,4 +96,18 @@ public class UserController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/")
+    public String home(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
+
+        String role = authResult.getAuthorities().toString();
+
+        if (role.contains("ADMIN")) {
+            return "redirect:/admin/home";
+        } else if (role.contains("USER")) {
+            return "redirect:/client/home";
+        } else {
+            return "redirect:/login";
+        }
+    }
 }

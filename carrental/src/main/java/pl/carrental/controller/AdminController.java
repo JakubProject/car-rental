@@ -37,6 +37,7 @@ public class AdminController {
             carRentService.editStatus(id, status);
         }catch (Exception e){
            model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "redirect:/admin/home/";
 

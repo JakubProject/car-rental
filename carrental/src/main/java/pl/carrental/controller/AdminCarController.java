@@ -51,6 +51,7 @@ public class AdminCarController {
             model.addAttribute("departments", departmentService.getAll());
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
 
         return "adminEditCarPage";
@@ -82,6 +83,7 @@ public class AdminCarController {
         carService.remove(id);
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "redirect:/admin/cars/";
     }

@@ -46,6 +46,7 @@ public class ClientController {
             model.addAttribute("rent", rent);
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "carRentPage";
     }
@@ -56,6 +57,7 @@ public class ClientController {
             carRentService.save(carRent);
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
 
         return "redirect:/client/home/";
@@ -70,6 +72,7 @@ public class ClientController {
             model.addAttribute("carRents", carRents);
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return "errorPage";
         }
         return "carHistoryRentPage";
     }
