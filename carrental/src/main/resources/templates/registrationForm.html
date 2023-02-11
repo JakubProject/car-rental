@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Rejestracja</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+
+
+<body>
+<h3 class="text-center text-white pt-5">Rejestracja</h3>
+<div class="container">
+  <div id="login-row" class="row justify-content-center align-items-center">
+    <div id="login-column" class="col-md-6">
+      <div id="login-box" class="col-md-12">
+        <form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/registration}">
+          <h3 class="text-center text-success">Zarejestruj się</h3>
+          <div class="form-group">
+            <label for="username" class="text-success">Podaj login:</label><br>
+            <input type="text" name="username" id="username" class="form-control" th:value="*{username}" th:errorClass="is-invalid">
+            <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+          </div>
+          <div class="form-group">
+            <label for="email" class="text-success">Podaj adres e-mail:</label><br>
+            <input type="text" name="email" id="email" class="form-control" th:value="*{email}" th:errorClass="is-invalid">
+            <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+          </div>
+          <div class="form-group">
+            <label for="password" class="text-success">Hasło:</label><br>
+            <input type="password" name="password" id="password" class="form-control" th:value="*{password}" th:errorClass="is-invalid">
+            <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+          </div>
+          <th:block th:if="${error != null}">
+            <div class="alert alert-danger" role="alert" th:text="${error}"></div>
+          </th:block>
+          <input type="submit" name="submit" class="btn btn-success btn-lg" value="Załóż konto">
+          <div id="register-link" class="text-right">
+            Masz już konto?
+            <a href="/login" class="text-success">Zaloguj się</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
