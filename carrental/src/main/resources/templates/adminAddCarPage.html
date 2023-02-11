@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> Departments </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div class="container m-5">
+    <nav th:replace="fragments/adminNavbar :: adminNavbar"></nav>
+    <div id="login-row" class="row justify-content-center align-items-center">
+        <div id="login-column" class="col-md-6">
+            <div id="login-box" class="col-md-12">
+                <form method="POST" class="form-signin" th:object="${car}" th:action="@{/admin/cars/save}">
+                    <h3 class="text-center text-success">Dodaj samochód</h3>
+                    <div class="form-group">
+                        <label for="mark" class="text-success">Podaj markę:</label><br>
+                        <input type="text" name="mark" id="mark" class="form-control" th:value="*{mark}" th:errorClass="is-invalid">
+                        <span class="has-error" th:if="${#fields.hasErrors('mark')}" th:errors="*{mark}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="model" class="text-success">Podaj model:</label><br>
+                        <input type="text" name="model" id="model" class="form-control" th:value="*{model}" th:errorClass="is-invalid">
+                        <span class="has-error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="perDay" class="text-success">Podaj kwotę za dzień:</label><br>
+                        <input type="text" name="perDay" id="perDay" class="form-control" th:value="*{perDay}" th:errorClass="is-invalid">
+                        <span class="has-error" th:if="${#fields.hasErrors('perDay')}" th:errors="*{perDay}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropDownList" class="text-success">Wybierz oddział:</label><br>
+                        <select class="form-control" id="dropDownList" th:field="*{departmentId}">
+                            <option th:each="option : ${departments}" th:value="${option.id}" th:text="${option}"></option>
+                        </select>
+                    </div>
+                    <th:block th:if="${error != null}">
+                        <div class="alert alert-danger" role="alert" th:text="${error}"></div>
+                    </th:block>
+                    <input type="submit" name="submit" class="btn btn-success btn-lg" value="Zapisz">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
