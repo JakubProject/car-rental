@@ -32,7 +32,7 @@ public class CarRentService {
 
     public void save(CarRent carRent) throws CarRentException {
         LocalDate today = LocalDate.now();
-        boolean isInvalidDate = today.isBefore(carRent.getStartDate()) || carRent.getStartDate().isAfter(carRent.getEndDate());
+        boolean isInvalidDate = today.isAfter(carRent.getStartDate()) || carRent.getStartDate().isAfter(carRent.getEndDate());
         if (isInvalidDate) {
             throw new CarRentException(ErrorConstant.BAD_RANGE);
         }
